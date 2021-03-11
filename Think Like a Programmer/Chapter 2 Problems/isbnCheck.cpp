@@ -45,6 +45,37 @@ bool checkIsbn(string isbn)
     return false;    
 }
 
+/*
+This method takes a 9-digit ISBN number and calculates the check digit
+to make a valid 10-digit ISBN number
+*/
+char isbnCheckDigit(string isbn)
+{
+    char checkDigit;
+    int total = 0;
+    for (int i = 0; i < 9; i++)
+    {
+        total += (10 - i) * ((int)isbn.at(i) - '0');
+    }
+    //cout << endl << "TOTAL " << total << endl;
+    total = 11 - (total % 11);
+    //cout << endl << "TOTAL: " << total << endl;
+    if (total == 10)
+    {
+        checkDigit = 'X';
+    }
+    else if (total == 11)
+    {
+        checkDigit = '0';
+    }
+    else
+    {
+        checkDigit = '0' + total;
+    }
+    
+    return checkDigit;
+}
+
 int main()
 {
     if (checkIsbn("007462542X"))
@@ -55,4 +86,6 @@ int main()
     {
         cout << endl << "That ISBN is NOT valid.";
     }
+
+    cout << endl << "The check digit for 011211242 is " << isbnCheckDigit("011211242");
 }
