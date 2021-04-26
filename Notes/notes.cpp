@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <time.h>
+#include <math.h>
 
 using namespace std;
 
@@ -12,9 +13,77 @@ using namespace std;
 This is a multi-line comment
 */
 
+// -- FUNCTIONS -- //
+//Functions must be declared before the main function
+int addNumbers(int firstNum, int secondNum = 0) //can set a default value for param, but must come after other params
+{
+    return firstNum + secondNum;
+}
+
+//Overloaded function - same name, different parameters
+int addNumbers(int firstNum, int secondNum, int thirdNum)
+{
+    return firstNum + secondNum + thirdNum;
+}
+// -- SECTION END -- //
+
+
+
+// -- TIME -- //
+string secondsToTime(int seconds)
+{
+    string time;
+
+    int hours = trunc(seconds / 3600);
+    seconds = seconds % 3600;
+    time = (hours > 9 ? "" : "0") + hours;
+
+    int minutes = trunc (seconds / 60);
+    seconds = seconds % 60;
+    time += (minutes > 9 ? ":" : ":0") + minutes;
+
+    if (seconds == 0) {time += ":00";} else if (seconds > 9 ) {time += ":" + seconds;} else {time += ":0" + seconds;}
+
+    return time;
+}
+// -- SECTION END -- //
+
+
+
+// -- RECURSION -- //
+//Recursive functions call themselves
+int getFactorial(int number)
+{
+    int sum;
+    if (number == 1) {
+        sum == 1;
+    }
+    else
+    {
+        sum = getFactorial(number - 1) * number;
+    }
+    return sum;
+}
+// -- SECTION END -- //
+
+
+
+// -- REFERENCE PARAMETERS -- //
+void rewindTime(int* year)
+{
+    cout << "Rewinding from " << *year << endl;
+    *year = (*year > 20 ? *year - 20 : 0);
+}
+
+void  backToReality(int& year)
+{
+    year = 2021;
+}
+// -- SECTION END -- //
+
 int main()
 {
-    // -- HELLO WORLD -- //
+    // -- OUTPUT -- //
     {
     cout << "Hello World" << endl;
     
@@ -406,10 +475,198 @@ int main()
 
     cout << "My guitar is an " << myGuitar.insert(0, "Epichead ") << endl;
     cout << "The brand of my guitar is " << myGuitar.erase(8, 4) << endl; //first param = starting index, second param = no of characters to erase
-    cout << "Just kidding, my guitar is actually an " << myGuitar.replace(3, 5, "phone") << endl << endl; //first = start index, second = num chars to erase, third = string to insert at index
+    cout << "Just kidding, my guitar is actually an " << myGuitar.replace(3, 5, "phone") << endl; //first = start index, second = num chars to erase, third = string to insert at index
 
     cout << endl;
     }
     // -- SECTION END -- //
-    return 0;
+
+
+
+    // -- VECTORS -- //
+    {
+    //This data structure is similar to arrays, but its size can be altered after it's initialised
+    vector <int> studentGrades(0);
+
+    int jamesGrades[5] = {70, 60, 55, 80, 75};
+    int alexGrades[5] = {40, 48, 78, 53, 56};
+
+    studentGrades.insert(studentGrades.begin(), jamesGrades, jamesGrades+5); //iterator, first to add, last to add
+    studentGrades.insert(studentGrades.begin(), alexGrades, alexGrades+5);
+
+    studentGrades.insert(studentGrades.end() - 2, 98); //add a single element at a given index
+
+    //Add a value at the end of a vector using the .push_back method
+    studentGrades.push_back(50);
+
+    int average = 0;
+
+    for (int &grade : studentGrades) //for each loop - use & to pass by reference
+    {
+        cout << grade << " ";
+        average += grade;
+    }
+
+    //Add a value at the end of a vector using the .push_back method
+
+    cout << endl << "The last grade is: " << studentGrades.back() << endl; //.back for last element in vector,
+    cout << "Average grade: " << average / studentGrades.size() << endl; //.size for number of elements
+    cout << "First element: " << studentGrades.front() << endl; //.front for first element
+    cout << "The vector is " << (studentGrades.empty() ? "empty." : "not empty.") << endl; //.empty return 1 if empty, 0 otherwise
+
+    studentGrades.pop_back(); //remove final element 
+    
+    cout << endl;
+    }
+    // -- SECTION END -- //
+
+
+    // -- RECURSION DEMONSTRATION -- //
+    {
+    //See recursion definition at top
+    int numToFactorial = 5;
+    cout << "The factorial of " << numToFactorial << " is " << getFactorial(numToFactorial) << endl;
+
+    cout << endl;
+    }
+    // -- SECTION END -- //
+
+
+
+    // -- FILE I/O -- //
+    {
+    string currLocation = "Gerudo Valley";
+
+    ofstream writer("location.txt");
+
+    if (! writer)
+    {
+        cout << "Error opening file" << endl;
+        return -1;
+    }
+    else
+    {
+        writer << currLocation;
+        writer.close();
+    }
+    /*
+    Different ofstream parameters cause different io functionality
+    ios::binary : treat the file as binary
+    ios::in : open a file to read input
+    ios::trunc : Default
+    ios::out : open a file to write output
+    */
+    ofstream writer2("location.txt", ios::app); //an ofstream to write to the end of an existing file
+
+    if (! writer2)
+    {
+        cout << "Error opening file" << endl;
+        return -1;
+    }
+    else
+    {
+        writer2 << " - Hyrule" << endl;
+        writer2.close();
+    }
+
+    char letter;
+
+    ifstream reader("location.txt");
+
+    if(! reader)
+    {
+        cout << "Error opening file" << endl;
+        return -1;
+    }
+    else
+    {
+        for (int i = 0; ! reader.eof(); i++)
+        {
+            reader.get(letter);
+            cout << letter;
+        }
+    }
+    cout << endl;
+    reader.close();
+
+    cout << endl;
+    }
+    // -- SECTION END -- //
+
+
+
+    // -- EXCEPTION HANDLING -- //
+    {
+    //Catch exceptions to provide system crashes and provide useful error messages
+
+    int number = 0;
+
+    try 
+    {
+        if (number != 0)
+        {
+            cout << 2/number << endl;
+        }
+        else throw (number);
+    }
+    catch (int number)
+    {
+        cout << number << " is not a valid denominator for division." << endl;
+    }
+
+    cout << endl;
+    }
+    // -- SECTION END -- //
+
+
+
+    // -- POINTERS -- //
+    {
+    //Use reference operator & to get the memory address of where a variable is stored
+    //When you pass by reference, any changes will persist outside of the function that took the reference parameter
+    string myMemory = "EXPANDING MIND";
+
+    string* memoryPointer = &myMemory; 
+
+    cout << "Address of my memory: " << memoryPointer << endl;
+    cout << "Data in my memory: " << *memoryPointer << endl; //* to dereference a pointer to get the data at that location
+
+    //You can also create pointers to data structures such as arrays
+    int longLostNums[6] = {4, 8, 15, 16, 23, 42};
+
+    int* lostNumsPtr = longLostNums;
+
+    cout << "Array address: " << lostNumsPtr << "\nValue at address 1: " << *lostNumsPtr << endl;
+    lostNumsPtr++; //increment pointer to get next value in array
+    cout << "Array address: " << lostNumsPtr << "\nValue at address 2: " << *lostNumsPtr << endl;
+    //array names are just pointers to an array, meaning they can be dereferenced to get the value
+    cout << "Array address: " << longLostNums << "\nValue of lost numbers: " << *longLostNums << endl << endl;
+
+    int year = 2021;
+
+    rewindTime(&year); //pass a parameter by reference.
+    cout << "The year is now " << year << endl;
+
+    int& yearRef = year; //& denotes REFERENCE PARAMETER
+    yearRef++;
+    cout << "Time has passed. It is now " << year << endl << endl;
+
+    backToReality(yearRef);
+
+    cout << "What a crazy dream! The year is ACTUALLY " << year << endl;
+
+    /*
+    POINTERS VS REFERENCES
+
+    Use pointers if you don't want to initialise at declaration
+
+    References can't change what they are pointing at, but pointers can
+
+    */
+
+    cout << endl;
+    }
+    // -- SECTION END -- //
+
+return 0;
 }
