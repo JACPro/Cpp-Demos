@@ -7,12 +7,6 @@
 
 using namespace std;
 
-//this is a comment
-
-/*
-This is a multi-line comment
-*/
-
 // -- FUNCTIONS -- //
 //Functions must be declared before the main function
 int addNumbers(int firstNum, int secondNum = 0) //can set a default value for param, but must come after other params
@@ -79,6 +73,79 @@ void  backToReality(int& year)
 {
     year = 2021;
 }
+// -- SECTION END -- //
+
+
+
+// -- CLASSES -- //
+//Using classes helps to model real-world objects
+class Animal 
+{
+    //Attributes of the model (e.g. size, shape) -- variables
+    //Capabilities of the model (e.g. running, increasing temperature) -- functions
+
+    //Private variables can only be changed by functions within that class - this is encapsulation
+    private:
+        int height; 
+        int weight;
+        string name;
+        
+        //Use static for variables that are shared by all objects of a class
+        static int numAnimalTypes;
+
+    public:
+        int getHeight() { return height; }
+        int getWeight() { return weight; }
+        string getName() { return name; }
+
+        //Encapsulation - protect stored values from outside changes
+        void setHeight (int cm) { height = cm; }
+        void setWeight (int kg) { height = kg; }
+        void setName (string newName) {name = newName; }
+
+        //Constructor - name MUST be identical to that of the class
+        Animal(int, int, string);
+
+        //Destructor
+        ~Animal();
+
+        //Overloaded constructor (i.e. receives different parameters)
+        Animal();
+
+
+        //Static methods are shared by all objects of a class - they can only use static variables
+        static int getNumAnimalTypes() { return numAnimalTypes; }
+
+        void toString();
+};
+
+//Declare class instance
+int Animal::numAnimalTypes = 0;
+
+Animal::Animal(int height, int weight, string name)
+{
+    this->height = height; 
+    this->weight = weight;
+    this->name = name;
+    Animal::numAnimalTypes++;
+}
+
+Animal::~Animal()
+{
+    cout << "Animal: " << this -> name << " was destroyed." << endl;
+}
+
+Animal::Animal()
+{
+    Animal::numAnimalTypes++;
+}
+
+void Animal::toString()
+{
+    cout << this -> name << " is " << this -> height << " cms tall and " <<
+        this -> weight << " kgs." << endl;
+}
+
 // -- SECTION END -- //
 
 int main()
@@ -666,6 +733,25 @@ int main()
 
     cout << endl;
     }
+    // -- SECTION END -- //
+
+
+
+    // -- CLASSES DEMONSTRATION -- //
+    //The following code demonstrates how to instantiate objects of the classes you've declared
+    Animal frog;
+
+    frog.setHeight(10);
+    frog.setWeight(1);
+    frog.setName("Frog");
+
+    frog.toString();
+
+
+    Animal horse(150, 380, "Horse");
+
+    horse.toString();
+
     // -- SECTION END -- //
 
 return 0;
