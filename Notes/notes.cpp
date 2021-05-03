@@ -146,6 +146,38 @@ void Animal::toString()
         this -> weight << " kgs." << endl;
 }
 
+//Inheritance
+class Cat : public Animal
+{
+    private:
+        string sound = "Meow";
+    
+    public:
+        void getSound()
+        {
+            cout << sound << endl;
+        }
+    
+        Cat(int, int, string, string);
+
+        Cat() : Animal(){};
+
+        void toString();
+    
+};
+
+
+Cat::Cat(int height, int weight, string name, string sound) :
+Animal(height, weight, name)
+{
+    this -> sound = sound;
+}
+
+void Cat::toString()
+{
+    cout << this -> getName() << " is " << this -> getHeight() << " cms tall and " 
+    << this -> getWeight() << " kgs. It says: " << this -> sound << endl;
+}
 // -- SECTION END -- //
 
 int main()
@@ -751,6 +783,11 @@ int main()
     Animal horse(150, 380, "Horse");
 
     horse.toString();
+
+    Cat nubbin = Cat(40, 20, "Nubbin", "MEOWZAS");
+
+    //Call superclass toString method
+    nubbin.Animal::toString();
 
     // -- SECTION END -- //
 
