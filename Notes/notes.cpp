@@ -206,6 +206,46 @@ class CustardCream : public Biscuit
         void getDerived() { cout << "Class: Snack - Biscuit" << endl; }
 };
 
+
+
+//Polymorphism - providing a single interface to multiple entities of different types
+//The enemy class is derived from by multiple different sub classes
+class Enemy
+{
+    public:
+        virtual void makeSound() { cout << "HYYYYEEEEAAAHHH!" << endl; }
+};
+
+class Archer : public Enemy
+{
+    public:
+        void makeSound() { cout << "Pew pew pew!" << endl; }
+};
+
+class Knight : public Enemy
+{
+    public:
+        void makeSound() { cout << "Slash slash hack" << endl; }
+};
+
+
+
+//Abstract data types
+class Car
+{
+    public:
+        virtual int getNumWheels() = 0;
+        virtual int getNumDoors() = 0;
+};
+
+class FordFocus : public Car
+{
+    public:
+        int getNumWheels() { cout << "4 Wheels" << endl; }
+        int getNumDoors() { cout << "4 Doors" << endl; }
+        FordFocus() {}
+        ~FordFocus();
+};
 // -- SECTION END -- //
 
 int main()
@@ -835,6 +875,11 @@ int main()
     yum->getClass();
     yum->getDerived();
     
+    cout << endl;
+
+    Car* fordFocus = new FordFocus();
+    cout << "Ford focus has: ";
+    fordFocus->getNumWheels();
     // -- SECTION END -- //
 
 return 0;
