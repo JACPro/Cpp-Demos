@@ -160,13 +160,14 @@ class Cat : public Animal
     
         Cat(int, int, string, string);
 
-        Cat() : Animal(){};
+        Cat() : Animal(){}; //call superclass empty constructor
 
-        void toString();
+        void toString(); //override superclass tostring method
     
 };
 
 
+//Get the superclass constructor to handle height, weight and name parameters
 Cat::Cat(int height, int weight, string name, string sound) :
 Animal(height, weight, name)
 {
@@ -178,6 +179,33 @@ void Cat::toString()
     cout << this -> getName() << " is " << this -> getHeight() << " cms tall and " 
     << this -> getWeight() << " kgs. It says: " << this -> sound << endl;
 }
+
+
+//VIRTUAL 
+
+class Snack
+{
+    public:
+        void getType() { cout << "Snack" << endl; }
+        
+        //use virtual to ensure that overriding subclass methods are called
+        //when a subclass object is stored in a supertype variable, the supertype method will be called unless the virtual keyword is used to define the superclass method
+        virtual void getClass() { cout << "Class: Snack" << endl; }
+};
+
+class Biscuit : public Snack
+{
+    public:
+        void getClass() { cout << "Class: Biscuit" << endl; }
+};
+
+class CustardCream : public Biscuit
+{
+    public:
+        void getClass() { cout << "Class: Custard Cream" << endl; }
+        void getDerived() { cout << "Class: Snack - Biscuit" << endl; }
+};
+
 // -- SECTION END -- //
 
 int main()
@@ -789,6 +817,24 @@ int main()
     //Call superclass toString method
     nubbin.Animal::toString();
 
+
+    Snack* snack = new Snack;
+    snack->getType();
+    snack->getClass();
+
+    cout << endl;
+
+    Biscuit* biccy = new Biscuit;
+    biccy->getType();
+    biccy->getClass();
+
+    cout << endl;
+
+    CustardCream* yum = new CustardCream;
+    yum->getType();
+    yum->getClass();
+    yum->getDerived();
+    
     // -- SECTION END -- //
 
 return 0;
